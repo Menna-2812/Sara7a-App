@@ -5,23 +5,28 @@ import { create, findOne } from './../../DB/database.repository.js';
 import UserModel from './../../DB/Models/user.model.js';
 import { BadRequestException, conflictException, NotFoundException } from './../../Utils/responnse/error.response.js';
 import { successResponse } from './../../Utils/responnse/success.response.js';
+import { encrypt } from './../../Utils/security/encryption.security.js';
 
 export const signUp = async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, phone } = req.body;
 
     //Check is user already exist
     if (await findOne({ model: UserModel, filter: { email } })) {
         throw conflictException({ message: "User Already Exists" });
     }
 
+    //Hash the Password
     const hashPassword = await generateHash({
-        plainText: password, 
+        plainText: password,
         algo: HashEnum.Bcrypt
-    })
+    });
+
+    //Encrypt The Phone 
+    const encryptedPhone = await encrypt(phone);
 
     const user = await create({
         model: UserModel,
-        data: [{ firstName, lastName, email, password: hashPassword }]
+        data: [{ firstName, lastName, email, password: hashPassword, phone: encryptedPhone }]
     });
 
     return successResponse({
@@ -45,7 +50,7 @@ export const login = async (req, res) => {
         algo: HashEnum.Bcrypt
     })
 
-    if(!isPasswordValid){
+    if (!isPasswordValid) {
         throw BadRequestException({
             message: "Invalid Email OR Password"
         })
