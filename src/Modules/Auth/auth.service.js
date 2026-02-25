@@ -1,11 +1,12 @@
 import { HashEnum } from '../../Utils/enums/security.enum.js';
 import { compareHash, generateHash } from '../../Utils/security/hash.security.js';
-import { create, findOne } from './../../DB/database.repository.js';
+import { create, findOne, findById } from './../../DB/database.repository.js';
 import UserModel from './../../DB/Models/user.model.js';
 import { BadRequestException, conflictException, NotFoundException } from './../../Utils/responnse/error.response.js';
 import { successResponse } from './../../Utils/responnse/success.response.js';
 import { encrypt } from './../../Utils/security/encryption.security.js';
-import { generateToken } from "../../Utils/tokens/token.js";
+import { generateToken, vreifyToken } from "../../Utils/tokens/token.js";
+import {getNewLoginCredientials} from "../../Utils/tokens/token.js"
 
 export const signUp = async (req, res) => {
     const { firstName, lastName, email, password, phone } = req.body;
@@ -60,18 +61,39 @@ export const login = async (req, res) => {
             message: "Invalid Email OR Password"
         })
     }
-
-    const accessToken = generateToken({ 
-        payload: { id: user._id, email: user.email },
-        
-    });
+    const credientials = await getNewLoginCredientials(user);
 
     return successResponse({
         res,
         statusCode: 201,
         message: "Login Successfully",
-        data: { accessToken }
+        data: { credientials }
     })
 };
 
+export const refreshToken = async (req, res) => {
+    const { authorization } = req.headers;
 
+    const decodedToken = vreifyToken({
+        token: authorization,
+        secretKey: TOKEN_REFRESH_KEY
+    });
+
+    const user = await findById({
+        model: UserModel,
+        id: decodedToken.id
+    });
+
+    if (!user) throw NotFoundException({ message: "User Not Found" });
+
+    const accessToken = generateToken({
+        payload: { id: user._id, email: user.email },
+    });
+
+    return successResponse({
+        res,
+        message: "Token Refresh Successfully",
+        data: { accessToken },
+        statusCode: 200
+    });
+}
