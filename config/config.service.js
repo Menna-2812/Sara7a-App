@@ -2,8 +2,8 @@ import { resolve } from "node:path";
 import dotenv from "dotenv";
 
 const envPath = {
-    devlopment: `.env.dev`,
-    production: `.env.prod`,
+  devlopment: `.env.dev`,
+  production: `.env.prod`,
 };
 
 dotenv.config({ path: resolve(`./config/${envPath.devlopment}`) });
@@ -21,7 +21,3 @@ export const TOKEN_ADMIN_REFRESH_KEY = process.env.TOKEN_REFRESH_ADMIN_SECRET_KE
 
 export const ACCESS_EXPIRES_DURATION = Number(process.env.ACCESS_EXPIRES);
 export const REFRESH_EXPIRES_DURATION = Number(process.env.REFRESH_EXPIRES);
-
-
-
-
