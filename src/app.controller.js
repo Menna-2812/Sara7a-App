@@ -14,6 +14,7 @@ const bootstrap = async (app, express) => {
         });
     });
 
+    app.use("/uploads", express.static("src/uploads"));
     app.use("/auth", authRouter);
     app.use("/users", userRouter);
 

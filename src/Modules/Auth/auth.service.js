@@ -1,18 +1,13 @@
 import { HashEnum } from "../../Utils/enums/security.enum.js";
-import {
-  compareHash,
-  generateHash,
-} from "../../Utils/security/hash.security.js";
-import { create, findOne, findById } from "./../../DB/database.repository.js";
+import { compareHash, generateHash } from "../../Utils/security/hash.security.js";
+import { create, findOne } from "./../../DB/database.repository.js";
 import UserModel from "./../../DB/Models/user.model.js";
 import {
   BadRequestException,
-  conflictException,
   NotFoundException,
 } from "./../../Utils/responnse/error.response.js";
 import { successResponse } from "./../../Utils/responnse/success.response.js";
 import { encrypt } from "./../../Utils/security/encryption.security.js";
-import { generateToken, vreifyToken } from "../../Utils/tokens/token.js";
 import { getNewLoginCredientials } from "../../Utils/tokens/token.js";
 
 export const signUp = async (req, res) => {

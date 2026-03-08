@@ -6,13 +6,13 @@ const userSchema = new mongoose.Schema(
         firstName: {
             type: String,
             required: [, "First Name is Mandatory"],
-            minLength: 2,
+            minLength: 3,
             maxLength: 25,
         },
         lastName: {
             type: String,
             required: [, "Last Name is Mandatory"],
-            minLength: 2,
+            minLength: 3,
             maxLength: 25,
         },
         email: {
@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
                 return this.provider == ProviderEnum.System;
             },
         },
+        age : Number,
         DOB: Date,
         phone: String,
         gender: {
