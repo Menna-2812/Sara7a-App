@@ -21,3 +21,5 @@ export const TOKEN_ADMIN_REFRESH_KEY = process.env.TOKEN_REFRESH_ADMIN_SECRET_KE
 
 export const ACCESS_EXPIRES_DURATION = Number(process.env.ACCESS_EXPIRES);
 export const REFRESH_EXPIRES_DURATION = Number(process.env.REFRESH_EXPIRES);
+
+export const CLIENT_ID = process.env.CLIENT_ID;

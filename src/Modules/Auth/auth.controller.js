@@ -26,4 +26,6 @@ router.post(
   authService.refreshToken,
 );
 
+router.post("/social-login", authService.loginWithGoogle);
+
 export default router;
