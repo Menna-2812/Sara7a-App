@@ -8,6 +8,7 @@ import {
   REFRESH_EXPIRES_DURATION,
 } from "../../../config/config.service.js";
 import { SignatureEnum, RoleEnum } from "../enums/user.enum.js";
+import { v4 as uuidv4 } from 'uuid';
 
 export const generateToken = ({
   payload,
@@ -49,15 +50,16 @@ export const getNewLoginCredientials = async (user) => {
     signatureLevel:
       user.role != RoleEnum.Admin ? SignatureEnum.User : SignatureEnum.Admin,
   });
+  const jwtid = uuidv4()
   const accessToken = generateToken({
     payload: { id: user._id },
     secretKey: signature.accessSignature,
-    options: { expiresIn: ACCESS_EXPIRES_DURATION },
+    options: { expiresIn: ACCESS_EXPIRES_DURATION, jwtid },
   });
   const refreshToken = generateToken({
     payload: { id: user._id },
     secretKey: signature.refreshSignature,
-    options: { expiresIn: REFRESH_EXPIRES_DURATION },
+    options: { expiresIn: REFRESH_EXPIRES_DURATION, jwtid },
   });
 
   return { accessToken, refreshToken };

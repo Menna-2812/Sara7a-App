@@ -102,3 +102,5 @@ export const deleteMany = async ({ model, filter = {} }) => {
 export const findOneAndDelete = async ({ model, filter = {} }) => {
   return await model.findOneAndDelete(filter);
 };
+
+

@@ -23,3 +23,11 @@ export const ACCESS_EXPIRES_DURATION = Number(process.env.ACCESS_EXPIRES);
 export const REFRESH_EXPIRES_DURATION = Number(process.env.REFRESH_EXPIRES);
 
 export const CLIENT_ID = process.env.CLIENT_ID;
+
+export const REDIS_URI = process.env.REDIS_URI;
+
+export const USER_EMAIL = process.env.USER_EMAIL;
+export const USER_PASSWORD = process.env.USER_PASSWORD;
+
+export const WHITE_LIST = process.env.WHITE_LIST;
+

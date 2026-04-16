@@ -46,18 +46,28 @@ export const generalFields = {
   }),
   role: joi.string().valid(...Object.values(RoleEnum)),
   provider: joi.string().valid(...Object.values(ProviderEnum)),
+  file: {
+    fieldname: joi.string(),
+    originalname: joi.string(),
+    encoding: joi.string(),
+    mimetype: joi.string(),
+    size: joi.number().positive(),
+    destination: joi.string(),
+    filename: joi.string(),
+    path: joi.string(),
+    finalPath: joi.string(),
+  },
+  otp: joi.string().pattern(/^[0-9]{6}$/),
 };
+
 export const validation = (schema) => {
   return (req, res, next) => {
     const validationError = [];
 
     for (const key of Object.keys(schema)) {
-      console.log(schema[key]);
-      console.log(schema);
       const validationResults = schema[key].validate(req[key], {
         abortEarly: false,
       });
-      console.log(`Validation Results for ${key}:`, validationResults);
       if (validationResults.error) {
         validationError.push({ key, details: validationResults.error.details });
       }
